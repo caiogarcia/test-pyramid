@@ -14,33 +14,38 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.github.ricardocomar.testpyramid.microservice.PyramidMicroserviceApplication;
 import com.github.ricardocomar.testpyramid.microservice.book.model.Book;
-import com.github.ricardocomar.testpyramid.microservice.book.usecase.BookCreateGateway;
+import com.github.ricardocomar.testpyramid.microservice.book.usecase.BookUpdateGateway;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DataProviderConfiguration.class})
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes = PyramidMicroserviceApplication.class)
 @ActiveProfiles("dataprovider")
-public class BookCreateDataProviderTest {
-	
-	@Autowired
-	private BookCreateGateway createGateway;
+public class BookUpdateDataProviderTest {
 
-	final Book book = Book.builder().name("John's thoughts").writter("John Snow").price(120.0).build();
+	@Autowired
+	private BookUpdateGateway createGateway;
+
+	final Book book = Book.builder()
+			.id(1L)
+			.name("John's thoughts")
+			.writter("John Snow 3")
+			.price(120.0)
+			.build();
 	
 	final Book expected = Book.builder()
-			.id(3L) //TODO deveria ser 1L
+			.id(1L) 
 			.name("John's thoughts")
-			.writter("John Snow")
+			.writter("John Snow 3")
 			.price(120.0)
 			.build();
 
 	@Test
 	public void testSuccess() throws Exception {
 	
-		Book created = createGateway.save(book);
+		Book updated = createGateway.update(book);
 		
-		Assert.assertThat(created, Matchers.equalTo(expected));
+		Assert.assertThat(updated, Matchers.equalTo(expected));
 	}
 	
 }

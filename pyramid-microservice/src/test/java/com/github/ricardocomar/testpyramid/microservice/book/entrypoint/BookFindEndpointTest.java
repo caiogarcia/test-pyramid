@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -22,7 +23,7 @@ import com.github.ricardocomar.testpyramid.microservice.PyramidMicroserviceAppli
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { EntrypointConfiguration.class })
-@DirtiesContext
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes = PyramidMicroserviceApplication.class)
 @ActiveProfiles("entrypoint")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:simpleBooks.sql")
@@ -50,5 +51,20 @@ public class BookFindEndpointTest {
 			.andExpect(MockMvcResultMatchers.jsonPath("$.writter").value("test writter"))
 			;
 	}
+	
+//	@Test
+//	public void testFindRange() throws Exception {
+//		// DONE Transformar em teste de integração
+//		// Implementado em BookFindUseCase
+//		this.mockMvc
+//			.perform(MockMvcRequestBuilders.get("/api/book")
+//					.param("start", "1000")
+//					.param("maxResult", "3")
+//					.accept(MediaType.APPLICATION_JSON_UTF8))
+//			.andExpect(MockMvcResultMatchers.status().isOk())
+//			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
+//			
+//			
+//	}
 
 }
